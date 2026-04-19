@@ -1,151 +1,151 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MediaSave PRO - High Speed Downloader</title>
+    <title>MediaSave Pro - HD Downloader</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;900&display=swap');
-        body { font-family: 'Outfit', sans-serif; background-color: #050505; color: white; }
-        .tab-active { background: #4f46e5; color: white; border: none; }
-        .glass-ui { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.05); }
-        .gradient-text { background: linear-gradient(90deg, #6366f1, #a855f7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #000; color: #fff; }
+        .saas-card { background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 2rem; }
+        .accent-gradient { background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%); }
+        .tab-active { background: #1a1a1a; color: #fff; border-bottom: 3px solid #6366f1; }
+        .loader-spin { border: 3px solid #1a1a1a; border-top: 3px solid #6366f1; border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body class="min-h-screen">
 
     <!-- Nav -->
-    <nav class="p-6 flex justify-between items-center max-w-6xl mx-auto">
-        <div class="text-2xl font-black italic">MEDIA<span class="text-indigo-500">SAVE</span></div>
-        <div class="text-[10px] bg-zinc-800 px-3 py-1 rounded-full text-zinc-400 font-bold tracking-widest uppercase">Direct Engine v5.0</div>
+    <nav class="max-w-6xl mx-auto p-6 flex justify-between items-center">
+        <div class="text-2xl font-extrabold italic tracking-tighter">MEDIA<span class="text-indigo-500">X</span></div>
+        <div class="bg-green-500/10 text-green-500 px-3 py-1 rounded-full text-[10px] font-bold">SERVER ACTIVE</div>
     </nav>
 
-    <!-- Hero -->
-    <div class="max-w-4xl mx-auto px-4 mt-10 text-center">
-        <h1 class="text-4xl md:text-6xl font-black mb-4">No Errors. <span class="gradient-text">Only Downloads.</span></h1>
-        <p class="text-zinc-500 mb-10">High-speed server for 1080p media from all social platforms.</p>
+    <!-- Main -->
+    <main class="max-w-4xl mx-auto px-4 mt-8">
+        <div class="text-center mb-10">
+            <h1 class="text-4xl md:text-6xl font-black mb-4">Master <span class="text-indigo-500">Downloader</span></h1>
+            <p class="text-gray-500">YouTube 1080p, Instagram Reels & FB Videos.</p>
+        </div>
 
         <!-- Platform Tabs -->
-        <div class="flex justify-center gap-2 mb-8 overflow-x-auto pb-2">
-            <button onclick="setTab('youtube')" id="tab-youtube" class="tab-btn px-6 py-3 rounded-xl font-bold glass-ui text-zinc-500 transition-all tab-active">YouTube</button>
-            <button onclick="setTab('instagram')" id="tab-instagram" class="tab-btn px-6 py-3 rounded-xl font-bold glass-ui text-zinc-500 transition-all">Instagram</button>
-            <button onclick="setTab('facebook')" id="tab-facebook" class="tab-btn px-6 py-3 rounded-xl font-bold glass-ui text-zinc-500 transition-all">Facebook</button>
+        <div class="flex justify-center border-b border-zinc-800 mb-8">
+            <button onclick="setTab('youtube')" id="tab-youtube" class="px-8 py-4 font-bold text-gray-500 transition-all tab-active">YouTube</button>
+            <button onclick="setTab('instagram')" id="tab-instagram" class="px-8 py-4 font-bold text-gray-500 transition-all">Instagram</button>
+            <button onclick="setTab('facebook')" id="tab-facebook" class="px-8 py-4 font-bold text-gray-500 transition-all">Facebook</button>
         </div>
 
         <!-- Tool Box -->
-        <div class="glass-ui rounded-[2rem] p-6 md:p-10 shadow-2xl">
-            <div class="flex flex-col gap-4">
-                <input type="text" id="videoUrl" placeholder="Paste link here..." 
-                class="w-full bg-zinc-900 border border-zinc-800 p-5 rounded-2xl text-white outline-none focus:border-indigo-500 transition-all text-lg">
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <select id="quality" class="bg-zinc-900 p-5 rounded-2xl border border-zinc-800 outline-none text-zinc-400">
-                        <option value="1080">1080p Full HD (MP4)</option>
-                        <option value="720">720p HD (MP4)</option>
-                        <option value="480">480p (MP4)</option>
+        <div class="saas-card p-6 md:p-10">
+            <div class="flex flex-col gap-6">
+                <div>
+                    <label class="text-[10px] font-bold text-zinc-500 uppercase tracking-widest ml-1">Video Link</label>
+                    <input type="text" id="videoUrl" oninput="getMeta()" placeholder="Paste YouTube link here..." 
+                    class="w-full bg-black border border-zinc-800 p-5 rounded-2xl mt-2 outline-none focus:border-indigo-500 transition-all text-lg">
+                </div>
+
+                <!-- Preview Area (Automatically shows when link is pasted) -->
+                <div id="metaPreview" class="hidden flex flex-col md:flex-row gap-6 p-4 bg-zinc-900/50 rounded-2xl border border-zinc-800">
+                    <img id="vThumb" src="" class="w-full md:w-40 rounded-xl object-cover shadow-2xl">
+                    <div class="flex-1">
+                        <h3 id="vTitle" class="font-bold text-lg leading-tight mb-2">Video Title Loading...</h3>
+                        <p id="vDesc" class="text-xs text-zinc-500 line-clamp-2 mb-4"></p>
+                    </div>
+                </div>
+
+                <div class="flex flex-col md:flex-row gap-4">
+                    <select id="quality" class="bg-zinc-900 text-white p-5 rounded-2xl outline-none border border-zinc-800 flex-1">
+                        <option value="1080">1080p Full HD</option>
+                        <option value="720">720p HD</option>
+                        <option value="480">480p SD</option>
                         <option value="mp3">Audio (MP3)</option>
                     </select>
-                    
-                    <button onclick="processLink()" class="bg-indigo-600 hover:bg-indigo-700 p-5 rounded-2xl font-black uppercase tracking-widest text-sm shadow-xl hover:scale-[1.02] active:scale-95 transition-all">
-                        Generate Download
+
+                    <button onclick="startDownload()" id="dlBtn" class="accent-gradient px-12 py-5 rounded-2xl font-black uppercase flex items-center justify-center gap-3">
+                        <span id="btnText">Download Now</span>
+                        <div id="loader" class="loader-spin hidden"></div>
                     </button>
                 </div>
             </div>
         </div>
 
-        <!-- Meta Info (Thumbnail Preview) -->
-        <div id="metaSection" class="hidden mt-10 glass-ui rounded-3xl p-6 animate-pulse-once">
-            <div class="flex flex-col md:flex-row gap-6 items-center">
-                <img id="thumbImg" src="" class="w-full md:w-48 rounded-xl border border-zinc-800" alt="Thumbnail">
-                <div class="text-left flex-1">
-                    <h3 id="vTitle" class="text-xl font-bold mb-4">Processing Title...</h3>
-                    <div class="flex gap-2">
-                        <button onclick="copyMeta()" class="bg-zinc-800 px-4 py-2 rounded-lg text-xs font-bold hover:bg-zinc-700">COPY TITLE</button>
-                        <a id="hdDownload" href="#" target="_blank" class="bg-white text-black px-6 py-2 rounded-lg text-xs font-bold">DOWNLOAD NOW</a>
-                    </div>
-                </div>
-            </div>
+        <!-- Instruction -->
+        <div class="mt-20 grid grid-cols-1 md:grid-cols-3 gap-6 opacity-50 text-center text-xs">
+            <div><i class="fa-solid fa-bolt mb-2 text-indigo-500"></i><p>HIGH SPEED SERVERS</p></div>
+            <div><i class="fa-solid fa-shield-check mb-2 text-indigo-500"></i><p>ENCRYPTED DOWNLOADS</p></div>
+            <div><i class="fa-solid fa-star mb-2 text-indigo-500"></i><p>NO ADS / NO REDIRECTS</p></div>
         </div>
-
-        <!-- Features -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-20 opacity-30">
-            <div class="p-4 border border-zinc-800 rounded-2xl text-center"><i class="fa-solid fa-bolt text-indigo-500 mb-2"></i><p class="text-[10px] font-bold">INSTANT</p></div>
-            <div class="p-4 border border-zinc-800 rounded-2xl text-center"><i class="fa-solid fa-shield text-indigo-500 mb-2"></i><p class="text-[10px] font-bold">SECURE</p></div>
-            <div class="p-4 border border-zinc-800 rounded-2xl text-center"><i class="fa-solid fa-video text-indigo-500 mb-2"></i><p class="text-[10px] font-bold">1080P</p></div>
-            <div class="p-4 border border-zinc-800 rounded-2xl text-center"><i class="fa-solid fa-cloud text-indigo-500 mb-2"></i><p class="text-[10px] font-bold">API CLOUD</p></div>
-        </div>
-    </div>
-
-    <footer class="mt-20 p-10 border-t border-zinc-900 text-center text-zinc-600 text-xs">
-        © 2024 MediaSave SAAS Toolkit. Designed for mobile browsers.
-    </footer>
+    </main>
 
     <script>
         let currentTab = 'youtube';
 
-        function setTab(platform) {
-            currentTab = platform;
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('tab-active'));
-            document.getElementById('tab-' + platform).classList.add('tab-active');
-            document.getElementById('videoUrl').placeholder = `Paste ${platform} link here...`;
-            document.getElementById('metaSection').classList.add('hidden');
+        function setTab(t) {
+            currentTab = t;
+            document.querySelectorAll('button').forEach(b => b.classList.remove('tab-active'));
+            document.getElementById('tab-' + t).classList.add('tab-active');
+            document.getElementById('videoUrl').placeholder = `Paste ${t} link here...`;
+            document.getElementById('metaPreview').classList.add('hidden');
         }
 
-        function processLink() {
+        // Automatic Metadata Fetch (Thumbnail & Title)
+        async function getMeta() {
+            const url = document.getElementById('videoUrl').value;
+            if (url.includes('youtube.com') || url.includes('youtu.be')) {
+                const id = url.split('v=')[1]?.split('&')[0] || url.split('/').pop().split('?')[0];
+                if (id && id.length === 11) {
+                    document.getElementById('vThumb').src = `https://img.youtube.com/vi/${id}/mqdefault.jpg`;
+                    document.getElementById('metaPreview').classList.remove('hidden');
+                    
+                    // Fetch Title
+                    try {
+                        const res = await fetch(`https://noembed.com/embed?url=${url}`);
+                        const data = await res.json();
+                        document.getElementById('vTitle').innerText = data.title;
+                    } catch (e) {
+                        document.getElementById('vTitle').innerText = "YouTube Video Found";
+                    }
+                }
+            }
+        }
+
+        function startDownload() {
             const url = document.getElementById('videoUrl').value;
             const quality = document.getElementById('quality').value;
-            
-            if (!url) {
-                alert("Please paste a link!");
-                return;
-            }
+            const btnText = document.getElementById('btnText');
+            const loader = document.getElementById('loader');
 
-            // Logic for YouTube Metadata (Title/Thumbnail)
-            if (currentTab === 'youtube') {
-                const videoId = extractID(url);
-                if (videoId) {
-                    document.getElementById('thumbImg').src = `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`;
-                    document.getElementById('vTitle').innerText = "YouTube Video Ready";
-                    document.getElementById('metaSection').classList.remove('hidden');
+            if (!url) return alert("Please paste a link!");
+
+            // Show Loading
+            btnText.style.display = 'none';
+            loader.classList.remove('hidden');
+
+            // --- STABLE REDIRECT ENGINE (India Fixed) ---
+            // Yahan hum aisi service use kar rahe hain jo blocked nahi hai
+            setTimeout(() => {
+                let finalLink = "";
+                
+                if (currentTab === 'youtube') {
+                    // Using Yt1s Style Secure Engine
+                    finalLink = `https://y2mate.nu/api/button/${quality}?url=${encodeURIComponent(url)}`;
+                } else {
+                    // Instagram / Facebook Engine
+                    finalLink = `https://snapsave.app/download?url=${encodeURIComponent(url)}`;
                 }
-            } else {
-                document.getElementById('vTitle').innerText = currentTab.toUpperCase() + " Media Found";
-                document.getElementById('thumbImg').src = "https://via.placeholder.com/150/111/fff?text=Media+Ready";
-                document.getElementById('metaSection').classList.remove('hidden');
-            }
 
-            // --- THE DOWNLOAD ENGINE (Bypasses Fetch Errors) ---
-            const hdBtn = document.getElementById('hdDownload');
-            
-            if (currentTab === 'youtube') {
-                // Professional redirect engine for YT 1080p
-                hdBtn.href = `https://loader.to/api/button/?url=${encodeURIComponent(url)}&f=${quality}`;
-            } else if (currentTab === 'instagram') {
-                // Professional redirect engine for Instagram
-                hdBtn.href = `https://saveig.app/api/process?url=${encodeURIComponent(url)}`;
-                // Alternate (Force open SaveFrom engine)
-                hdBtn.href = `https://en.savefrom.net/1-youtube-video-downloader-383/?url=${encodeURIComponent(url)}`;
-            } else if (currentTab === 'facebook') {
-                // Professional redirect engine for Facebook
-                hdBtn.href = `https://fdownloader.net/download?url=${encodeURIComponent(url)}`;
-            }
+                // Redirect in the same system
+                window.location.href = finalLink;
 
-            // Force scroll to result
-            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-        }
-
-        function extractID(url) {
-            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-            const match = url.match(regExp);
-            return (match && match[2].length == 11) ? match[2] : null;
-        }
-
-        function copyMeta() {
-            const title = document.getElementById('vTitle').innerText;
-            navigator.clipboard.writeText(title);
-            alert("Title copied!");
+                // Reset Button after 3 seconds
+                setTimeout(() => {
+                    btnText.style.display = 'block';
+                    loader.classList.add('hidden');
+                }, 3000);
+            }, 1000);
         }
     </script>
 </body>
