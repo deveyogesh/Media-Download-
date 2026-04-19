@@ -3,38 +3,173 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MediaSave - 1080p HD Downloader</title>
+    <title>MediaSave Pro | 1080p HD Downloader</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap');
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #020617; color: #f8fafc; }
-        .glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1); }
-        .tab-active { background: #4f46e5; border-color: #6366f1; color: white; }
-        .gradient-btn { background: linear-gradient(90deg, #4f46e5, #9333ea); transition: all 0.3s ease; }
-        .gradient-btn:hover { transform: scale(1.02); box-shadow: 0 0 20px rgba(79, 70, 229, 0.5); }
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #050505; color: #ffffff; }
+        .saas-card { background: rgba(20, 20, 20, 0.8); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.08); }
+        .active-tab { background: #4F46E5; color: white; box-shadow: 0 0 20px rgba(79, 70, 229, 0.4); }
+        .loader { border: 3px solid #1a1a1a; border-top: 3px solid #4F46E5; border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; display: none; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .download-btn { background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%); transition: all 0.3s ease; }
+        .download-btn:hover { transform: scale(1.02); opacity: 0.9; }
     </style>
 </head>
-<body class="min-h-screen">
+<body class="min-h-screen pb-10">
 
     <!-- Header -->
-    <nav class="p-6 flex justify-between items-center max-w-6xl mx-auto">
-        <div class="text-2xl font-extrabold tracking-tighter">MEDIA<span class="text-indigo-500">SAVER</span></div>
-        <div class="hidden md:block text-xs font-bold text-slate-500 uppercase tracking-widest">High Speed 1080p Engine</div>
+    <nav class="max-w-6xl mx-auto p-6 flex justify-between items-center">
+        <div class="text-2xl font-extrabold tracking-tighter">MEDIA<span class="text-indigo-500">SAVE</span></div>
+        <div class="px-4 py-1 rounded-full border border-zinc-800 text-[10px] font-bold text-zinc-500 uppercase tracking-widest">v4.0 Final Stable</div>
     </nav>
 
-    <main class="max-w-4xl mx-auto px-4 pt-10">
-        <!-- Hero -->
-        <div class="text-center mb-10">
-            <h1 class="text-4xl md:text-6xl font-extrabold mb-4">No Limits. <span class="text-indigo-500">Just HD.</span></h1>
-            <p class="text-slate-400">Download YouTube, Instagram & Facebook videos in original quality.</p>
+    <!-- Main Content -->
+    <div class="max-w-4xl mx-auto px-4 mt-12">
+        <div class="text-center mb-12">
+            <h1 class="text-5xl md:text-7xl font-extrabold mb-6 tracking-tight">One Link. <br><span class="text-indigo-500">Pure HD.</span></h1>
+            <p class="text-zinc-500 text-lg md:text-xl max-w-xl mx-auto">High-speed downloading system for YouTube, Instagram & Facebook. No ads, No redirects.</p>
         </div>
 
         <!-- Platform Tabs -->
-        <div class="grid grid-cols-3 gap-2 mb-6">
-            <button onclick="switchTab('youtube')" id="tab-youtube" class="tab-btn py-4 rounded-2xl font-bold border border-slate-800 glass transition-all flex flex-col items-center gap-1 tab-active">
-                <i class="fa-brands fa-youtube text-xl"></i><span class="text-[10px] uppercase">YouTube</span>
+        <div class="flex justify-center gap-3 mb-8 overflow-x-auto pb-2">
+            <button onclick="setTab('youtube')" id="tab-youtube" class="tab-btn active-tab px-8 py-3 rounded-2xl font-bold transition-all whitespace-nowrap">
+                <i class="fa-brands fa-youtube mr-2"></i>YouTube
             </button>
+            <button onclick="setTab('instagram')" id="tab-instagram" class="tab-btn bg-zinc-900 text-zinc-500 px-8 py-3 rounded-2xl font-bold transition-all whitespace-nowrap">
+                <i class="fa-brands fa-instagram mr-2"></i>Instagram
+            </button>
+            <button onclick="setTab('facebook')" id="tab-facebook" class="tab-btn bg-zinc-900 text-zinc-500 px-8 py-3 rounded-2xl font-bold transition-all whitespace-nowrap">
+                <i class="fa-brands fa-facebook mr-2"></i>Facebook
+            </button>
+        </div>
+
+        <!-- Input Section -->
+        <div class="saas-card p-6 md:p-10 rounded-[2.5rem] shadow-2xl">
+            <div class="flex flex-col gap-5">
+                <div class="relative">
+                    <input type="text" id="videoUrl" placeholder="Paste YouTube link here..." 
+                    class="w-full bg-black/40 border border-zinc-800 p-6 rounded-3xl text-white outline-none focus:border-indigo-500 transition-all text-lg">
+                </div>
+
+                <div class="flex flex-col md:flex-row gap-4">
+                    <select id="quality" class="bg-zinc-900 text-white p-5 rounded-2xl outline-none border border-zinc-800 flex-1 appearance-none cursor-pointer">
+                        <option value="1080">1080p (Full HD)</option>
+                        <option value="720">720p (HD)</option>
+                        <option value="480">480p (SD)</option>
+                        <option value="max">Best Available</option>
+                    </select>
+
+                    <button onclick="fetchVideo()" id="mainBtn" class="download-btn px-12 py-5 rounded-2xl font-black uppercase tracking-widest text-sm flex items-center justify-center gap-3">
+                        <span id="btnText">Get Media</span>
+                        <div id="loader" class="loader"></div>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Result Card -->
+        <div id="resultBox" class="hidden mt-10 saas-card p-8 rounded-[2.5rem] animate-in fade-in zoom-in duration-300">
+            <div class="flex flex-col items-center text-center">
+                <div class="w-20 h-20 bg-indigo-500/10 rounded-full flex items-center justify-center mb-6">
+                    <i class="fa-solid fa-check text-indigo-500 text-3xl"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-2">Video Successfully Fetched!</h3>
+                <p class="text-zinc-500 mb-8">Your high-quality file is ready. Click below to start downloading.</p>
+                
+                <div class="flex flex-col w-full gap-4 max-w-sm">
+                    <a id="downloadLink" href="#" target="_blank" download class="w-full bg-white text-black font-black py-5 rounded-2xl text-xl hover:bg-zinc-200 transition-all text-center">
+                        DOWNLOAD NOW
+                    </a>
+                    <button onclick="location.reload()" class="text-zinc-600 font-bold hover:text-white transition">Clear and Start Over</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- System Status -->
+        <div id="errorMessage" class="hidden mt-6 p-4 bg-red-500/10 border border-red-500/20 rounded-2xl text-red-400 text-center text-sm"></div>
+    </div>
+
+    <script>
+        let currentTab = 'youtube';
+
+        function setTab(p) {
+            currentTab = p;
+            document.querySelectorAll('.tab-btn').forEach(b => {
+                b.classList.remove('active-tab');
+                b.classList.add('bg-zinc-900', 'text-zinc-500');
+            });
+            const active = document.getElementById('tab-' + p);
+            active.classList.add('active-tab');
+            active.classList.remove('bg-zinc-900', 'text-zinc-500');
+            document.getElementById('videoUrl').placeholder = `Paste ${p} link here...`;
+            document.getElementById('resultBox').classList.add('hidden');
+        }
+
+        async function fetchVideo() {
+            const url = document.getElementById('videoUrl').value;
+            const quality = document.getElementById('quality').value;
+            const btnText = document.getElementById('btnText');
+            const loader = document.getElementById('loader');
+            const resultBox = document.getElementById('resultBox');
+            const errorBox = document.getElementById('errorMessage');
+
+            if (!url) {
+                alert("Please paste a link!");
+                return;
+            }
+
+            // UI Loading State
+            btnText.style.display = 'none';
+            loader.style.display = 'block';
+            errorBox.classList.add('hidden');
+            resultBox.classList.add('hidden');
+
+            try {
+                // Professional Cobalt API Engine (Direct Request)
+                const response = await fetch('https://api.cobalt.tools/api/json', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        url: url,
+                        videoQuality: quality,
+                        filenameStyle: 'pretty'
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.status === 'stream' || data.status === 'redirect') {
+                    // Success logic
+                    document.getElementById('downloadLink').href = data.url;
+                    resultBox.classList.remove('hidden');
+                    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+                } 
+                else if (data.status === 'picker') {
+                    // Multi-link support (like for Instagram gallery)
+                    document.getElementById('downloadLink').href = data.picker[0].url;
+                    resultBox.classList.remove('hidden');
+                }
+                else {
+                    throw new Error(data.text || "API could not process this link.");
+                }
+
+            } catch (error) {
+                console.error(error);
+                errorBox.innerText = "Error: " + error.message + ". Try a different link or quality.";
+                errorBox.classList.remove('hidden');
+            } finally {
+                btnText.style.display = 'block';
+                loader.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>            </button>
             <button onclick="switchTab('instagram')" id="tab-instagram" class="tab-btn py-4 rounded-2xl font-bold border border-slate-800 glass transition-all flex flex-col items-center gap-1">
                 <i class="fa-brands fa-instagram text-xl text-pink-500"></i><span class="text-[10px] uppercase">Instagram</span>
             </button>
